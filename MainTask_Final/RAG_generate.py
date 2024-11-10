@@ -5,16 +5,16 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import RetrievalQA, ConversationalRetrievalChain
 import os
-from openai import OpenAI
+import openai  # 수정: openai 모듈 전체를 임포트
 import re
 
-client = OpenAI()
 
 class RagGenerator:
     def __init__(self, api_key, job_field, db_path):
         # 1. OpenAI API 키 설정
         OPENAI_API_KEY = api_key       # openai.api_key = "your_openai_api_key"
         os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+        openai.api_key = api_key  # openai.api_key 설정
         # 2. 직무 입력
         self.job_field = job_field
         # 3. 벡터 데이터베이스가 저장된 위치
@@ -49,20 +49,12 @@ class RagGenerator:
 
 
 # def finetune_generate(job_field, keywords)의 함수 재구성
-    def generate_sentence(self, keyword, doc, message):
-        """키워드를 기반으로 비유 문장을 생성"""
-        response = openai.ChatCompletion.create(
-            model="ft:gpt-3.5-turbo-1106:personal:1-jobinteview-finetunemodel:AIenIBIz",
-            messages=message,
-            temperature=0 )
-        return response['choices'][0]['message']['content']
-    
-
-    def generate_sentences_for_keywords(self, keywords, message_template):
-        """키워드 리스트를 돌면서, 각 키워드에 대한 비유 문장 생성"""
-        for kw, _ in keywords:
-            doc = self.retrieve_documents(kw)
-            # `message_template`를 활용해 `message`를 구성
-            message = message_template(kw, self.job_field, doc)
-            sentence = self.generate_sentence(kw, doc, message)
-            print(f"{kw}: {sentence}\n")
+    def generate_sentence(self, message):
+      client = openai.OpenAI()
+      """키워드를 기반으로 비유 문장을 생성"""
+      response = client.chat.completions.create(
+          model="ft:gpt-3.5-turbo-1106:personal:1-jobinteview-finetunemodel:AIenIBIz",
+          messages=message,
+          temperature=0 )
+      response_text = response.choices[0].message.content
+      return response_text

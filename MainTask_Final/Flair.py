@@ -9,7 +9,7 @@ Original file is located at
 ## Task1 : 키워드 추출
 """
 
-!pip install flair konlpy
+# !pip install flair konlpy
 
 """- 열정
 - 팀워크
@@ -98,30 +98,6 @@ class KeywordExtractor:
         top_related_keywords = self.compute_similarity(competency_user, keywords)
         return top_related_keywords
 
-
-
-
-
-
-'''아래 내용은 mian에서 돌리도록 수정'''
-    def run(self):
-        # 1. 자기소개서 핵심 역량 입력
-        # 전 keyword_to_compare, 후 competency_user
-        competency_user = input("자기소개서에 드러내고 싶었던 역량을 작성해주세요 : ")
-
-        # 2. 자기소개서 내용 입력
-        document = input("자기소개서 내용을 입력해주세요: ")
-
-        # 3. 키워드 추출 (임의의 단어로 추출한 키워드 리스트)
-        keywords = self.extract_keywords(document)
-
-        # 4. 유사도 계산 및 상위 5개 키워드 출력
-        top_related_keywords = self.compute_similarity(competency_user, keywords)
-
-        print(f"\n'{competency_user}'과 연관된 상위 5개의 키워드:")
-        for kw, similarity in top_related_keywords:
-            print(f"{kw}: 유사도 {similarity:.4f}")
-        return competency_user, top_related_keywords
     
 # 클래스 실행 예시
 if __name__ == "__main__":
