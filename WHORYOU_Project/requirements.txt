@@ -1,0 +1,11 @@
+streamlit
+langchain
+langchain-community
+openai
+tiktoken
+flair
+konlpy
+torch
+transformers
+llama-cpp-python
+loguru
